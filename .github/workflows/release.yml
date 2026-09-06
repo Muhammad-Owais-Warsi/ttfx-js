@@ -86,7 +86,7 @@ jobs:
         with:
           path: bins
       - run: |
-          for pkg in ttfx-linux-x64-gnu ttfx-linux-x64-musl ttfx-darwin-x64 ttfx-darwin-arm64 ttfx-win32-x64-msvc; do
+          for pkg in ttfx-linux-x64-gnu ttfx-linux-x64-musl ttfx-darwin-x64 ttfx-darwin-arm64 ttfx-windows-x64; do
             exe=ttfx
             if [ "$pkg" = "ttfx-windows-x64" ]; then exe=ttfx.exe; fi
             cp "bins/$pkg/$exe" "ttfx-js/packages/$pkg/$exe"
