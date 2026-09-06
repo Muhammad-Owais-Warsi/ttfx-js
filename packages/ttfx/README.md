@@ -3,9 +3,9 @@
 Terminal text effects as a single static binary. No Rust needed:
 
 ```sh
-npx @owais786warsi/ttfx decrypt <<< "hello"
-echo "hello" | npx @owais786warsi/ttfx beams
-npm i -g @owais786warsi/ttfx
+npx ttfx-cli decrypt <<< "hello"
+echo "hello" | npx ttfx-cli beams
+npm i -g ttfx-cli
 ```
 
 All 37 effects included. Usage matches the Rust binary:
