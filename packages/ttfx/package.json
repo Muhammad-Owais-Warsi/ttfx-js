@@ -1,6 +1,6 @@
 {
   "name": "ttfx-js",
-  "version": "0.3.2-win.2",
+  "version": "0.3.2-win.3",
   "description": "Terminal text effects as a single static binary (npm distribution of ttfx)",
   "license": "MIT",
   "repository": {
@@ -8,7 +8,8 @@
     "url": "https://github.com/Muhammad-Owais-Warsi/ttfx-js"
   },
   "bin": {
-    "ttfx": "bin/ttfx.js"
+    "ttfx": "bin/ttfx.js",
+    "ttfx-js": "bin/ttfx.js"
   },
   "files": [
     "bin/"
