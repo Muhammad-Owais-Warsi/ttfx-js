@@ -3,5 +3,5 @@ packages/ttfx-linux-x64-gnu/ttfx
 packages/ttfx-linux-x64-musl/ttfx
 packages/ttfx-darwin-x64/ttfx
 packages/ttfx-darwin-arm64/ttfx
-packages/ttfx-win32-x64-msvc/ttfx.exe
+packages/ttfx-windows-x64/ttfx.exe
 *.tgz

@@ -1,5 +1,5 @@
 {
-  "name": "ttfx-win32-x64-msvc",
+  "name": "ttfx-windows-x64",
   "version": "0.3.2-win.0",
   "description": "ttfx binary for Windows x64",
   "license": "MIT",

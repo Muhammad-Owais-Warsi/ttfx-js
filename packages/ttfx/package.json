@@ -1,6 +1,6 @@
 {
   "name": "ttfx",
-  "version": "0.3.2-win.0",
+  "version": "0.3.2-win.1",
   "description": "Terminal text effects as a single static binary (npm distribution of ttfx)",
   "license": "MIT",
   "repository": {
@@ -18,6 +18,6 @@
     "ttfx-linux-x64-musl": "0.3.2-win.0",
     "ttfx-darwin-x64": "0.3.2-win.0",
     "ttfx-darwin-arm64": "0.3.2-win.0",
-    "ttfx-win32-x64-msvc": "0.3.2-win.0"
+    "ttfx-windows-x64": "0.3.2-win.0"
   }
 }

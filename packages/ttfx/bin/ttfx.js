@@ -25,7 +25,7 @@ function isMusl() {
 function platformPackage() {
   const platform = process.platform;
   const arch = process.arch;
-  if (platform === "win32" && arch === "x64") return "ttfx-win32-x64-msvc";
+  if (platform === "win32" && arch === "x64") return "ttfx-windows-x64";
   if (platform === "darwin" && arch === "x64") return "ttfx-darwin-x64";
   if (platform === "darwin" && arch === "arm64") return "ttfx-darwin-arm64";
   if (platform === "linux" && arch === "x64") {

@@ -40,7 +40,7 @@ jobs:
             os: macos-latest
             target: aarch64-apple-darwin
             exe: ttfx
-          - pkg: ttfx-win32-x64-msvc
+          - pkg: ttfx-windows-x64
             os: windows-latest
             target: x86_64-pc-windows-msvc
             exe: ttfx.exe
@@ -88,12 +88,12 @@ jobs:
       - run: |
           for pkg in ttfx-linux-x64-gnu ttfx-linux-x64-musl ttfx-darwin-x64 ttfx-darwin-arm64 ttfx-win32-x64-msvc; do
             exe=ttfx
-            if [ "$pkg" = "ttfx-win32-x64-msvc" ]; then exe=ttfx.exe; fi
+            if [ "$pkg" = "ttfx-windows-x64" ]; then exe=ttfx.exe; fi
             cp "bins/$pkg/$exe" "ttfx-js/packages/$pkg/$exe"
           done
         shell: bash
       - run: |
-          for pkg in ttfx-linux-x64-gnu ttfx-linux-x64-musl ttfx-darwin-x64 ttfx-darwin-arm64 ttfx-win32-x64-msvc ttfx; do
+          for pkg in ttfx-linux-x64-gnu ttfx-linux-x64-musl ttfx-darwin-x64 ttfx-darwin-arm64 ttfx-windows-x64 ttfx; do
             ver=$(node -p "require('./ttfx-js/packages/$pkg/package.json').version")
             if npm view "$pkg@$ver" version >/dev/null 2>&1; then
               echo "$pkg@$ver already published, skipping publish"
