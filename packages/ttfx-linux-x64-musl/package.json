@@ -3,6 +3,10 @@
   "version": "0.3.2-win.0",
   "description": "ttfx binary for Linux x64 (musl, static)",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Muhammad-Owais-Warsi/ttfx-js"
+  },
   "os": ["linux"],
   "cpu": ["x64"],
   "files": ["ttfx"]
