@@ -14,7 +14,7 @@ if (!bin) {
 const cases = [
   { input: 'hello', effect: 'decrypt', opts: { seed: 1 } },
   { input: 'hello world', effect: 'beams', opts: { seed: 7 } },
-  { input: 'hello', effect: 'wipe', opts: { seed: 3, effectArgs: ['--wipe-direction', 'left'] } },
+  { input: 'hello', effect: 'wipe', opts: { seed: 3, effectArgs: ['--wipe-delay', '5'] } },
   { input: 'hello', effect: 'decrypt', opts: { seed: 1, effectArgs: ['--typing-speed', '5'] } },
   { input: 'hi', effect: 'wipe', opts: { seed: 5, randomEffect: true, includeEffects: ['wipe'] } },
 ];
