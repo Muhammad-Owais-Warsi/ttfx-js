@@ -16,6 +16,6 @@ jobs:
         with:
           node-version: "24"
           registry-url: "https://registry.npmjs.org"
-      - run: npm deprecate ttfx-cli@"0.3.2-win.1" "Renamed to ttfx-js — install with: npm i ttfx-js"
+      - run: "npm deprecate ttfx-cli@0.3.2-win.1 'Renamed to ttfx-js - install with npm i ttfx-js'"
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
