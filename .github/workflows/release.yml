@@ -94,7 +94,7 @@ jobs:
         shell: bash
       - run: |
           for pkg in ttfx-linux-x64-gnu ttfx-linux-x64-musl ttfx-darwin-x64 ttfx-darwin-arm64 ttfx-win32-x64-msvc ttfx; do
-            npm publish --provenance --access public "ttfx-js/packages/$pkg"
+            npm publish --provenance --access public --tag next "ttfx-js/packages/$pkg"
           done
         working-directory: .
         env:
