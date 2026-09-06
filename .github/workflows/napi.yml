@@ -72,7 +72,8 @@ jobs:
           targets: ${{ matrix.target }}
       - if: matrix.musl
         run: sudo apt-get update && sudo apt-get install -y musl-tools
-      - run: npm ci --prefix native
+      - run: npm ci
+        working-directory: native
       - run: npx napi build --platform --target ${{ matrix.target }} --release
         working-directory: native
       - run: node test.mjs
@@ -111,7 +112,8 @@ jobs:
         shell: bash
       - run: cargo build --release
         working-directory: ttfx-src
-      - run: npm ci --prefix ttfx-js/native
+      - run: npm ci
+        working-directory: ttfx-js/native
       - run: npx napi build --platform
         working-directory: ttfx-js/native
       - run: node ttfx-js/native/sync-gate.mjs "ttfx-src/target/release/${{ matrix.exe }}"
