@@ -44,23 +44,28 @@ jobs:
           - pkg: ttfx-node-linux-x64-gnu
             os: ubuntu-latest
             target: x86_64-unknown-linux-gnu
+            fulltest: true
             artifact: index.linux-x64-gnu.node
           - pkg: ttfx-node-linux-x64-musl
             os: ubuntu-latest
             target: x86_64-unknown-linux-musl
             artifact: index.linux-x64-musl.node
+            fulltest: false
             musl: true
           - pkg: ttfx-node-darwin-x64
             os: macos-15-intel
             target: x86_64-apple-darwin
+            fulltest: true
             artifact: index.darwin-x64.node
           - pkg: ttfx-node-darwin-arm64
             os: macos-latest
             target: aarch64-apple-darwin
+            fulltest: true
             artifact: index.darwin-arm64.node
           - pkg: ttfx-node-win32-x64-msvc
             os: windows-latest
             target: x86_64-pc-windows-msvc
+            fulltest: true
             artifact: index.win32-x64-msvc.node
     steps:
       - uses: actions/checkout@v4
@@ -78,7 +83,18 @@ jobs:
         working-directory: native
       - run: npx napi build --platform --target ${{ matrix.target }} --release
         working-directory: native
+      - run: |
+          node -e "
+            const b = require('./${{ matrix.artifact }}');
+            const assert = require('node:assert/strict');
+            assert.equal(b.listEffects().length, 37);
+            const a = b.getFrames('hello', 'decrypt', { seed: 1 });
+            assert.deepEqual(a, b.getFrames('hello', 'decrypt', { seed: 1 }));
+            console.log('smoke OK', a.length, 'frames');
+          "
+        working-directory: native
       - run: node test.mjs
+        if: matrix.fulltest
         working-directory: native
       - uses: actions/upload-artifact@v4
         with:

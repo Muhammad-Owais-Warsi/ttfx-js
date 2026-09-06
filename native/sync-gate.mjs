@@ -30,7 +30,11 @@ function cliFrames(input, effect, opts) {
     ...(opts.randomEffect ? [] : [effect]),
     ...(opts.effectArgs || []),
   ];
-  const out = execFileSync(bin, argv, { input, encoding: 'buffer', maxBuffer: 256 * 1024 * 1024 });
+  // No encoding option: stdout arrives as a UTF-8 string (frames are valid
+  // UTF-8), converted back to bytes for byte-precise record parsing.
+  // ('buffer' is not a valid execFileSync encoding.)
+  const text = execFileSync(bin, argv, { input, maxBuffer: 256 * 1024 * 1024 });
+  const out = Buffer.from(text, 'utf8');
   // Length-prefixed records, parsed byte-precise (frames may contain \n).
   const frames = [];
   let pos = 0;

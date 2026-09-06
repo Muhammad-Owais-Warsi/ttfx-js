@@ -1,0 +1,7 @@
+# napi cdylibs resolve node symbols at load time; macOS needs dynamic lookup.
+# (napi-cli normally injects this; belts and suspenders for cross/CI builds.)
+[target.x86_64-apple-darwin]
+rustflags = ["-C", "link-args=-undefined", "-C", "link-args=dynamic_lookup"]
+
+[target.aarch64-apple-darwin]
+rustflags = ["-C", "link-args=-undefined", "-C", "link-args=dynamic_lookup"]
