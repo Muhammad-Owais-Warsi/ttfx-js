@@ -1,0 +1,9 @@
+{
+  "name": "ttfx-darwin-arm64",
+  "version": "0.3.2-win.0",
+  "description": "ttfx binary for macOS arm64",
+  "license": "MIT",
+  "os": ["darwin"],
+  "cpu": ["arm64"],
+  "files": ["ttfx"]
+}

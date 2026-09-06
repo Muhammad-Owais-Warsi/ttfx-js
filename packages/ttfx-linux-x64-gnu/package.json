@@ -1,0 +1,9 @@
+{
+  "name": "ttfx-linux-x64-gnu",
+  "version": "0.3.2-win.0",
+  "description": "ttfx binary for Linux x64 (glibc)",
+  "license": "MIT",
+  "os": ["linux"],
+  "cpu": ["x64"],
+  "files": ["ttfx"]
+}

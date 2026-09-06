@@ -1,0 +1,105 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      ttfx_ref:
+        description: "Fork tag/branch to build (e.g. v0.3.2-win.0)"
+        default: "v0.3.2-win.0"
+        required: true
+      publish:
+        description: "Publish to npm (false = artifacts only)"
+        default: "false"
+        required: true
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  build:
+    name: Build (${{ matrix.pkg }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - pkg: ttfx-linux-x64-gnu
+            os: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+            exe: ttfx
+          - pkg: ttfx-linux-x64-musl
+            os: ubuntu-latest
+            target: x86_64-unknown-linux-musl
+            exe: ttfx
+            musl: true
+          - pkg: ttfx-darwin-x64
+            os: macos-15-intel
+            target: x86_64-apple-darwin
+            exe: ttfx
+          - pkg: ttfx-darwin-arm64
+            os: macos-latest
+            target: aarch64-apple-darwin
+            exe: ttfx
+          - pkg: ttfx-win32-x64-msvc
+            os: windows-latest
+            target: x86_64-pc-windows-msvc
+            exe: ttfx.exe
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: ttfx-js
+      - uses: actions/checkout@v4
+        with:
+          repository: Muhammad-Owais-Warsi/ttfx
+          ref: ${{ inputs.ttfx_ref || github.ref_name }}
+          path: ttfx-src
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+      - if: matrix.musl
+        run: sudo apt-get update && sudo apt-get install -y musl-tools
+      - run: cargo build --release --target ${{ matrix.target }}
+        working-directory: ttfx-src
+      - run: cp "ttfx-src/target/${{ matrix.target }}/release/${{ matrix.exe }}" "ttfx-js/packages/${{ matrix.pkg }}/${{ matrix.exe }}"
+        shell: bash
+      - run: ./ttfx-js/packages/${{ matrix.pkg }}/${{ matrix.exe }} --version
+        shell: bash
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.pkg }}
+          path: ttfx-js/packages/${{ matrix.pkg }}/${{ matrix.exe }}
+
+  publish:
+    name: Publish to npm
+    needs: build
+    if: inputs.publish == 'true' || startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: ttfx-js
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          registry-url: "https://registry.npmjs.org"
+      - uses: actions/download-artifact@v4
+        with:
+          path: bins
+      - run: |
+          for pkg in ttfx-linux-x64-gnu ttfx-linux-x64-musl ttfx-darwin-x64 ttfx-darwin-arm64 ttfx-win32-x64-msvc; do
+            exe=ttfx
+            if [ "$pkg" = "ttfx-win32-x64-msvc" ]; then exe=ttfx.exe; fi
+            cp "bins/$pkg/$exe" "ttfx-js/packages/$pkg/$exe"
+          done
+        shell: bash
+      - run: |
+          for pkg in ttfx-linux-x64-gnu ttfx-linux-x64-musl ttfx-darwin-x64 ttfx-darwin-arm64 ttfx-win32-x64-msvc ttfx; do
+            npm publish --provenance --access public "ttfx-js/packages/$pkg"
+          done
+        working-directory: .
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
