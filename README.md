@@ -5,8 +5,8 @@ npm distribution of [ttfx](https://github.com/omacom-io/ttfx) (Rust port of
 prebuilt binaries for Linux, macOS and Windows, so users need no Rust:
 
 ```sh
-npx ttfx decrypt <<< "hello"
-npm i -g ttfx
+npx @owais786warsi/ttfx decrypt <<< "hello"
+npm i -g @owais786warsi/ttfx
 ```
 
 Binaries are built from https://github.com/Muhammad-Owais-Warsi/ttfx
