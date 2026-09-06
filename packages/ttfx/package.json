@@ -1,5 +1,5 @@
 {
-  "name": "ttfx-cli",
+  "name": "ttfx-js",
   "version": "0.3.2-win.1",
   "description": "Terminal text effects as a single static binary (npm distribution of ttfx)",
   "license": "MIT",
