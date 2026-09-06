@@ -9,18 +9,29 @@ Linux, macOS and Windows, so `npm` users get everything with no Rust, no
 Python, no compiler:
 
 ```sh
-npx ttfx-js decrypt <<< "hello"
+echo "hello" | npx ttfx-js decrypt
 ```
 
 All 37 effects ride inside each binary — the JS here only picks the file for
 your OS/CPU and hands it your terminal, so speed, rendering and exit codes
 are identical to the native build.
 
+## Credit
+
+Every effect, the animation engine and the command-line interface are the
+work of [TerminalTextEffects](https://github.com/ChrisBuilds/terminaltexteffects)
+by [ChrisBuilds](https://github.com/ChrisBuilds), via the
+[ttfx Rust port](https://github.com/omacom-io/ttfx) (Windows support from
+[this fork](https://github.com/Muhammad-Owais-Warsi/ttfx)). This repository
+only packages their prebuilt binaries for npm — see THIRD-PARTY-NOTICES for
+the full attribution. If you like the effects, star the original.
+
 ## Installation
 
 ```sh
-npm i ttfx-js          # local to a project, run with npx
-npm i -g ttfx-js       # global, adds the ttfx command everywhere
+npx ttfx-js decrypt            # no install at all, runs once (pipe text in)
+npm i ttfx-js                  # local to a project, then npx ttfx-js ...
+npm i -g ttfx-js               # global, adds the ttfx command everywhere
 ```
 
 No postinstall build, no peer dependencies. The platform binary (~1 MB
@@ -32,13 +43,13 @@ download) arrives as an optional dependency npm selects automatically.
 <producer> | ttfx [terminal options] <effect> [effect options]
 ```
 
-A few to try (PowerShell shown; bash works the same):
+A few to try (same in PowerShell, cmd and bash):
 
 ```sh
-"hello" | npx ttfx-js decrypt
-"hello" | npx ttfx-js beams
+echo "hello" | npx ttfx-js decrypt
+echo "hello" | npx ttfx-js beams
 git log --oneline -10 | npx ttfx-js matrix
-npx ttfx-js --random-effect <<< "surprise me"
+echo "surprise me" | npx ttfx-js --random-effect
 npx ttfx-js decrypt --help    # options for one effect
 ```
 
@@ -75,16 +86,6 @@ Options:
 ```
 
 (The binary prints its own name in `Usage:` — `ttfx` after a global install.)
-
-## Credit
-
-Every effect, the animation engine and the command-line interface are the
-work of [TerminalTextEffects](https://github.com/ChrisBuilds/terminaltexteffects)
-by [ChrisBuilds](https://github.com/ChrisBuilds), via the
-[ttfx Rust port](https://github.com/omacom-io/ttfx) (Windows support from
-[this fork](https://github.com/Muhammad-Owais-Warsi/ttfx)). This repository
-only packages their prebuilt binaries for npm — see THIRD-PARTY-NOTICES for
-the full attribution. If you like the effects, star the original.
 
 ## License
 
