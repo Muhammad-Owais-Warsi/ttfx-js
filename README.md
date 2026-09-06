@@ -98,6 +98,30 @@ Options:
 
 (The binary prints its own name in `Usage:` — `ttfx` after a global install.)
 
+## API (`ttfx-node`)
+
+For CLI builders (chalk-style): `npm i ttfx-node`, then
+
+```js
+import { play, getFrames, listEffects } from 'ttfx-node';
+
+await play('Deploy complete', 'decrypt');                 // animates in your terminal
+const frames = getFrames('hi', 'beams', { seed: 1 });    // pure ANSI strings
+const tuned = getFrames('hi', 'decrypt', {
+  seed: 1, effectArgs: ['--typing-speed', '5'],           // any effect option, CLI-validated
+});
+```
+
+`play` hides/restores the cursor, paces at `frameRate`, prints plain final
+text under `NO_COLOR`/non-TTY, and rejects with code `INTERRUPTED` on Ctrl-C
+after restoring the cursor. `getFrames` is sync and deterministic per seed;
+terminal size is never read, so output is machine-independent.
+
+Sync guarantee: CI asserts CLI `--parity-dump` and `getFrames` byte-identical
+for the same input/seed (`native/sync-gate.mjs`, per OS) — a release fails if
+the API ever renders differently from the CLI. Both ship from the same engine
+tag (see `.ttfx-ref` and `versions.json`).
+
 ## License
 
 MIT — see [LICENSE](LICENSE). The shipped binaries stay under their own MIT

@@ -1,11 +1,46 @@
 {
   "name": "ttfx-node",
   "version": "0.1.0",
-  "private": true,
-  "description": "Headless ttfx frames for JS CLI builders (napi binding, sync)",
+  "description": "Headless ttfx frames for JS CLI builders (sync napi binding)",
   "license": "MIT",
-  "main": "index.js",
-  "types": "index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Muhammad-Owais-Warsi/ttfx-js"
+  },
+  "main": "api.js",
+  "types": "api.d.ts",
+  "files": [
+    "index.js",
+    "index.d.ts",
+    "api.js",
+    "api.mjs",
+    "api.d.ts"
+  ],
+  "exports": {
+    ".": {
+      "types": "./api.d.ts",
+      "import": "./api.mjs",
+      "default": "./api.js"
+    },
+    "./binding": {
+      "types": "./index.d.ts",
+      "default": "./index.js"
+    }
+  },
+  "files": [
+    "index.js",
+    "index.d.ts",
+    "api.js",
+    "api.mjs",
+    "api.d.ts"
+  ],
+  "optionalDependencies": {
+    "ttfx-node-linux-x64-gnu": "0.1.0",
+    "ttfx-node-linux-x64-musl": "0.1.0",
+    "ttfx-node-darwin-x64": "0.1.0",
+    "ttfx-node-darwin-arm64": "0.1.0",
+    "ttfx-node-win32-x64-msvc": "0.1.0"
+  },
   "scripts": {
     "build": "napi build --platform --release",
     "build:debug": "napi build --platform",

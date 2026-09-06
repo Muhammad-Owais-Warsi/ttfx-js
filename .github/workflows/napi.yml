@@ -1,0 +1,183 @@
+name: Node API
+
+on:
+  workflow_dispatch:
+    inputs:
+      ttfx_ref:
+        description: "Fork tag/branch to build (empty = .ttfx-ref file)"
+        default: ""
+        required: false
+      publish:
+        description: "Publish to npm (false = artifacts only)"
+        default: "false"
+        required: true
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  setup:
+    name: Resolve engine tag
+    runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.ref.outputs.tag }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: ref
+        run: |
+          if [ -n "${{ inputs.ttfx_ref }}" ]; then
+            echo "tag=${{ inputs.ttfx_ref }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "tag=$(cat .ttfx-ref)" >> "$GITHUB_OUTPUT"
+          fi
+      - run: node -e "console.log('engine tag: ${{ steps.ref.outputs.tag }}')"
+
+  build:
+    name: Build (${{ matrix.pkg }})
+    needs: setup
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - pkg: ttfx-node-linux-x64-gnu
+            os: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+            artifact: index.linux-x64-gnu.node
+          - pkg: ttfx-node-linux-x64-musl
+            os: ubuntu-latest
+            target: x86_64-unknown-linux-musl
+            artifact: index.linux-x64-musl.node
+            musl: true
+          - pkg: ttfx-node-darwin-x64
+            os: macos-15-intel
+            target: x86_64-apple-darwin
+            artifact: index.darwin-x64.node
+          - pkg: ttfx-node-darwin-arm64
+            os: macos-latest
+            target: aarch64-apple-darwin
+            artifact: index.darwin-arm64.node
+          - pkg: ttfx-node-win32-x64-msvc
+            os: windows-latest
+            target: x86_64-pc-windows-msvc
+            artifact: index.win32-x64-msvc.node
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+      - if: matrix.musl
+        run: sudo apt-get update && sudo apt-get install -y musl-tools
+      - run: npm ci --prefix native
+      - run: npx napi build --platform --target ${{ matrix.target }} --release
+        working-directory: native
+      - run: node test.mjs
+        working-directory: native
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.pkg }}
+          path: native/${{ matrix.artifact }}
+
+  sync-gate:
+    name: Sync gate (${{ matrix.os }})
+    needs: setup
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            exe: ttfx
+          - os: windows-latest
+            exe: ttfx.exe
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: ttfx-js
+      - uses: actions/checkout@v4
+        with:
+          repository: Muhammad-Owais-Warsi/ttfx
+          ref: ${{ needs.setup.outputs.tag }}
+          path: ttfx-src
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - run: grep -q "tag = \"${{ needs.setup.outputs.tag }}\"" ttfx-js/native/Cargo.toml
+        shell: bash
+      - run: cargo build --release
+        working-directory: ttfx-src
+      - run: npm ci --prefix ttfx-js/native
+      - run: npx napi build --platform
+        working-directory: ttfx-js/native
+      - run: node ttfx-js/native/sync-gate.mjs "ttfx-src/target/release/${{ matrix.exe }}"
+        shell: bash
+
+  publish:
+    name: Publish to npm
+    needs: [setup, build]
+    if: inputs.publish == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: ttfx-js
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          registry-url: "https://registry.npmjs.org"
+      - run: |
+          node -e "
+            const assert = require('node:assert/strict');
+            const v = require('./ttfx-js/versions.json');
+            const main = require('./ttfx-js/native/package.json');
+            assert.equal(main.version, v.nodeVersion, 'native != versions.json');
+            for (const d of ['linux-x64-gnu', 'linux-x64-musl', 'darwin-x64', 'darwin-arm64', 'win32-x64-msvc']) {
+              const p = require('./ttfx-js/packages/ttfx-node-' + d + '/package.json');
+              assert.equal(p.version, v.nodeVersion, d + ' != versions.json');
+            }
+            assert.equal('${{ needs.setup.outputs.tag }}', v.ttfxTag, 'tag != versions.json');
+            console.log('versions OK', JSON.stringify(v));
+          "
+        shell: bash
+      - uses: actions/download-artifact@v4
+        with:
+          path: bins
+      - run: |
+          for spec in \
+            "ttfx-node-linux-x64-gnu:index.linux-x64-gnu.node" \
+            "ttfx-node-linux-x64-musl:index.linux-x64-musl.node" \
+            "ttfx-node-darwin-x64:index.darwin-x64.node" \
+            "ttfx-node-darwin-arm64:index.darwin-arm64.node" \
+            "ttfx-node-win32-x64-msvc:index.win32-x64-msvc.node"; do
+            pkg="${spec%%:*}"
+            file="${spec##*:}"
+            cp "bins/$pkg/$file" "ttfx-js/packages/$pkg/$file"
+          done
+        shell: bash
+      - run: |
+          for dir in ttfx-node-linux-x64-gnu ttfx-node-linux-x64-musl ttfx-node-darwin-x64 ttfx-node-darwin-arm64 ttfx-node-win32-x64-msvc; do
+            pkg=$(node -p "require('./ttfx-js/packages/$dir/package.json').name")
+            ver=$(node -p "require('./ttfx-js/packages/$dir/package.json').version")
+            if npm view "$pkg@$ver" version >/dev/null 2>&1; then
+              echo "$pkg@$ver already published, skipping publish"
+            else
+              npm publish --provenance --access public --tag next "ttfx-js/packages/$dir"
+            fi
+            npm dist-tag add "$pkg@$ver" latest
+          done
+          pkg=$(node -p "require('./ttfx-js/native/package.json').name")
+          ver=$(node -p "require('./ttfx-js/native/package.json').version")
+          if npm view "$pkg@$ver" version >/dev/null 2>&1; then
+            echo "$pkg@$ver already published, skipping publish"
+          else
+            npm publish --provenance --access public --tag next ./ttfx-js/native
+          fi
+          npm dist-tag add "$pkg@$ver" latest
+        shell: bash
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

@@ -1,0 +1,13 @@
+{
+  "name": "ttfx-node-darwin-x64",
+  "version": "0.1.0",
+  "description": "ttfx-node binding for macOS x64",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Muhammad-Owais-Warsi/ttfx-js"
+  },
+  "os": ["darwin"],
+  "cpu": ["x64"],
+  "files": ["index.darwin-x64.node"]
+}

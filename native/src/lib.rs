@@ -135,13 +135,16 @@ pub fn get_frames(input: String, effect: String, options: Option<FramesOptions>)
     argv.push("--ignore-terminal-dimensions".to_string());
     if opts.random_effect == Some(true) {
         argv.push("--random-effect".to_string());
-        for name in opts.include_effects.unwrap_or_default() {
+        // clap takes all values after ONE flag occurrence; repeating the flag errors.
+        let include = opts.include_effects.unwrap_or_default();
+        if !include.is_empty() {
             argv.push("--include-effects".to_string());
-            argv.push(name);
+            argv.extend(include);
         }
-        for name in opts.exclude_effects.unwrap_or_default() {
+        let exclude = opts.exclude_effects.unwrap_or_default();
+        if !exclude.is_empty() {
             argv.push("--exclude-effects".to_string());
-            argv.push(name);
+            argv.extend(exclude);
         }
     } else {
         if effect.trim().is_empty() {
