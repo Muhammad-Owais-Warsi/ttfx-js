@@ -30,7 +30,7 @@ jobs:
           else
             echo "tag=$(cat .ttfx-ref)" >> "$GITHUB_OUTPUT"
           fi
-      - run: node -e "console.log('engine tag: ${{ steps.ref.outputs.tag }}')"
+      - run: "node -e \"console.log('engine tag: ${{ steps.ref.outputs.tag }}')\""
 
   build:
     name: Build (${{ matrix.pkg }})
