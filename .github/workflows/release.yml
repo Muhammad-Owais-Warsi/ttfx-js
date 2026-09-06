@@ -5,7 +5,7 @@ on:
     inputs:
       ttfx_ref:
         description: "Fork tag/branch to build (e.g. v0.3.2-win.0)"
-        default: "v0.3.2-win.0"
+        default: "v0.3.2-win.1"
         required: true
       publish:
         description: "Publish to npm (false = artifacts only)"
