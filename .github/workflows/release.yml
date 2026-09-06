@@ -94,7 +94,13 @@ jobs:
         shell: bash
       - run: |
           for pkg in ttfx-linux-x64-gnu ttfx-linux-x64-musl ttfx-darwin-x64 ttfx-darwin-arm64 ttfx-win32-x64-msvc ttfx; do
-            npm publish --provenance --access public --tag next "ttfx-js/packages/$pkg"
+            ver=$(node -p "require('./ttfx-js/packages/$pkg/package.json').version")
+            if npm view "$pkg@$ver" version >/dev/null 2>&1; then
+              echo "$pkg@$ver already published, skipping publish"
+            else
+              npm publish --provenance --access public --tag next "ttfx-js/packages/$pkg"
+            fi
+            npm dist-tag add "$pkg@$ver" latest
           done
         working-directory: .
         env:
