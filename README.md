@@ -53,13 +53,15 @@ echo "surprise me" | npx ttfx-js --random-effect
 npx ttfx-js decrypt --help    # options for one effect
 ```
 
-After a global install the command shortens to `ttfx` itself:
+After a global install two commands exist and do the same thing — `ttfx`
+(matches the upstream docs) and `ttfx-js` (matches the package name):
 
 ```sh
 echo "hello" | ttfx beams
 echo "hello" | ttfx decrypt
 git log --oneline -10 | ttfx matrix
 echo "surprise me" | ttfx --random-effect
+# ...or replace ttfx with ttfx-js in any of the above
 ```
 
 `npx ttfx-js --help` prints all 37 effects and the terminal options:
