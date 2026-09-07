@@ -30,6 +30,23 @@ export interface PlayOptions extends FramesOptions {
    * @defaultValue false
    */
   noColor?: boolean;
+  /**
+   * Replay in the previous run's rows instead of reserving new lines below
+   * the prompt. Requires the same text (or equal explicit
+   * `canvasWidth`/`canvasHeight`) as the previous run. Omit on the first
+   * call of a loop, set on the rest.
+   *
+   * @example
+   * ```js
+   * let first = true;
+   * for (const effect of ['decrypt', 'beams', 'wipe']) {
+   *   await play(text, effect, { seed: 1, reuseCanvas: !first });
+   *   first = false;
+   * }
+   * ```
+   * @defaultValue false
+   */
+  reuseCanvas?: boolean;
 }
 
 /**

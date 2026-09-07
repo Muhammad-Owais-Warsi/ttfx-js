@@ -40,6 +40,9 @@ function shouldColorize(opts) {
  * @param {object} [opts] - `seed`, `frameRate` (0 = unpaced), `canvasWidth`,
  * `canvasHeight`, `effectArgs` (e.g. `['--typing-speed', '5']`), and any
  * `getFrames` option. Discover flags with `npx ttfx-js <effect> --help`.
+ * @param {boolean} [opts.reuseCanvas] - Replay in the previous run's rows
+ * (same text, or equal explicit canvas) instead of reserving new lines.
+ * First call in a loop omits it; later calls set it.
  * @returns {Promise<void>} Resolves when the animation finishes.
  * @throws Rejects with code `INTERRUPTED` on Ctrl-C, after restoring the
  * cursor — catch it and choose your exit code.
@@ -69,13 +72,16 @@ async function play(input, effect, opts = {}) {
   // shell history above.
   const rows = frames[0].split('\n').length;
   const rewind = rows > 1 ? `\x1b[${rows - 1}A\r` : '\r';
+  // Reuse the previous run's rows (same text, or equal explicit canvas):
+  // wipe them in place instead of reserving new lines below.
+  const reuse = opts.reuseCanvas === true;
   let interrupted = false;
   const onSigint = () => {
     interrupted = true;
   };
   process.on('SIGINT', onSigint);
   try {
-    out.write('\x1b[?25l' + '\n'.repeat(rows) + `\x1b[${rows}A`);
+    out.write('\x1b[?25l' + (reuse ? `\x1b[${rows}A\x1b[0J` : '\n'.repeat(rows) + `\x1b[${rows}A`));
     for (let i = 0; i < frames.length; i++) {
       if (interrupted) {
         const e = new Error('interrupted');
