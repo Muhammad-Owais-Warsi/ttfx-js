@@ -1,13 +1,20 @@
 {
   "name": "ttfx-node-windows-x64",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "ttfx-node binding for Windows x64",
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/Muhammad-Owais-Warsi/ttfx-js"
   },
-  "os": ["win32"],
-  "cpu": ["x64"],
-  "files": ["index.win32-x64-msvc.node"]
+  "os": [
+    "win32"
+  ],
+  "cpu": [
+    "x64"
+  ],
+  "files": [
+    "index.win32-x64-msvc.node"
+  ],
+  "main": "index.win32-x64-msvc.node"
 }

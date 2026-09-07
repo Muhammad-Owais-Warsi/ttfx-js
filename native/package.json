@@ -1,6 +1,6 @@
 {
   "name": "ttfx-node",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Headless ttfx frames for JS CLI builders (sync napi binding)",
   "license": "MIT",
   "repository": {
@@ -27,19 +27,12 @@
       "default": "./index.js"
     }
   },
-  "files": [
-    "index.js",
-    "index.d.ts",
-    "api.js",
-    "api.mjs",
-    "api.d.ts"
-  ],
   "optionalDependencies": {
-    "ttfx-node-linux-x64-gnu": "0.1.0",
-    "ttfx-node-linux-x64-musl": "0.1.0",
-    "ttfx-node-darwin-x64": "0.1.0",
-    "ttfx-node-darwin-arm64": "0.1.0",
-    "ttfx-node-windows-x64": "0.1.0"
+    "ttfx-node-linux-x64-gnu": "0.1.1",
+    "ttfx-node-linux-x64-musl": "0.1.1",
+    "ttfx-node-darwin-x64": "0.1.1",
+    "ttfx-node-darwin-arm64": "0.1.1",
+    "ttfx-node-windows-x64": "0.1.1"
   },
   "scripts": {
     "build": "napi build --platform --release",
