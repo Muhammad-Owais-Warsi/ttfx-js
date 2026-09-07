@@ -155,9 +155,9 @@ jobs:
             const v = require('./ttfx-js/versions.json');
             const main = require('./ttfx-js/native/package.json');
             assert.equal(main.version, v.nodeVersion, 'native != versions.json');
-            for (const d of ['linux-x64-gnu', 'linux-x64-musl', 'darwin-x64', 'darwin-arm64', 'windows-x64']) {
-              const p = require('./ttfx-js/packages/ttfx-node-' + d + '/package.json');
-              assert.equal(p.version, v.nodeVersion, d + ' != versions.json');
+            for (const [name, ver] of Object.entries(main.optionalDependencies)) {
+              const p = require('./ttfx-js/packages/' + name + '/package.json');
+              assert.equal(p.version, ver, name + ' != native optionalDependencies');
             }
             assert.equal('${{ needs.setup.outputs.tag }}', v.ttfxTag, 'tag != versions.json');
             console.log('versions OK', JSON.stringify(v));
