@@ -1,6 +1,6 @@
 {
   "name": "ttfx-node",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Headless ttfx frames for JS CLI builders (sync napi binding)",
   "license": "MIT",
   "repository": {

@@ -55,6 +55,39 @@ defaults, and invalid flags throw a descriptive `Error`. Empty/blank input
 throws `NO INPUT.`; oversized input, canvas (max 1000×500) or `maxFrames`
 throw before the engine runs.
 
+## Recommendations
+
+Building a CLI with this? The patterns that work best:
+
+- **Fire-and-forget → `play()`.** One call animates and cleans up. Call it on
+  a fresh line; it reserves its own rows below the prompt and never paints
+  over your shell history.
+- **Custom player, tests, or pre-baked output → `getFrames()`.** Compute once,
+  reuse the array (replay it, write it to a file, snapshot it). Same seed in,
+  byte-identical frames out — snapshots never flake.
+- **Always pass `seed` in tests.** Omit it in production for variety.
+- **Discover options from the CLI:** `npx ttfx-js <effect> --help` lists every
+  flag; paste them into `effectArgs` verbatim. Invalid flags throw immediately
+  with the CLI's own error text.
+- **Respect non-terminals.** `play` prints plain final text under `NO_COLOR`,
+  pipes, or CI automatically — test yours with `NO_COLOR=1`. Never gate your
+  whole CLI on animation; treat it as decoration around plain output.
+- **Handle Ctrl-C.** `play` restores the cursor and rejects with code
+  `INTERRUPTED` — catch it and choose your exit code:
+  ```js
+  try { await play('Working…', 'beams'); }
+  catch (e) { if (e.code !== 'INTERRUPTED') throw e; process.exit(130); }
+  ```
+- **Fix the canvas for layouts.** Default canvases hug the input; if several
+  animations share a screen, pass the same `canvasWidth`/`canvasHeight` so
+  they align instead of jumping.
+- **Mind the frame budget.** `maxFrames` defaults to 10000; a fullscreen
+  long-runner can hold tens of MB as strings. For ambient/background loops,
+  prefer short inputs and bounded effects (`wipe`, `beams`) over open-ended
+  ones.
+- **Colors:** 24-bit by default; `xtermColors: true` for limited terminals,
+  `noColor: true` for logs.
+
 ## Sync with the CLI
 
 `ttfx-node` and the `ttfx-js` CLI build from the same engine tag, and CI
