@@ -62,10 +62,9 @@ jobs:
             target: aarch64-apple-darwin
             fulltest: true
             artifact: index.darwin-arm64.node
-          - pkg: ttfx-node-win32-x64-msvc
+          - pkg: ttfx-node-windows-x64
             os: windows-latest
             target: x86_64-pc-windows-msvc
-            fulltest: true
             artifact: index.win32-x64-msvc.node
     steps:
       - uses: actions/checkout@v4
@@ -173,14 +172,14 @@ jobs:
             "ttfx-node-linux-x64-musl:index.linux-x64-musl.node" \
             "ttfx-node-darwin-x64:index.darwin-x64.node" \
             "ttfx-node-darwin-arm64:index.darwin-arm64.node" \
-            "ttfx-node-win32-x64-msvc:index.win32-x64-msvc.node"; do
+            "ttfx-node-windows-x64:index.win32-x64-msvc.node"; do
             pkg="${spec%%:*}"
             file="${spec##*:}"
             cp "bins/$pkg/$file" "ttfx-js/packages/$pkg/$file"
           done
         shell: bash
       - run: |
-          for dir in ttfx-node-linux-x64-gnu ttfx-node-linux-x64-musl ttfx-node-darwin-x64 ttfx-node-darwin-arm64 ttfx-node-win32-x64-msvc; do
+          for dir in ttfx-node-linux-x64-gnu ttfx-node-linux-x64-musl ttfx-node-darwin-x64 ttfx-node-darwin-arm64 ttfx-node-windows-x64; do
             pkg=$(node -p "require('./ttfx-js/packages/$dir/package.json').name")
             ver=$(node -p "require('./ttfx-js/packages/$dir/package.json').version")
             if npm view "$pkg@$ver" version >/dev/null 2>&1; then

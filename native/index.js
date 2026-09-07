@@ -69,7 +69,10 @@ switch (platform) {
           if (localFileExisted) {
             nativeBinding = require('./index.win32-x64-msvc.node')
           } else {
-            nativeBinding = require('ttfx-node-win32-x64-msvc')
+            // Patched: npm's spam filter blocks ttfx-node-win32-x64-msvc,
+            // so the Windows package ships as ttfx-node-windows-x64.
+            // Re-apply after regenerating with napi-cli.
+            nativeBinding = require('ttfx-node-windows-x64')
           }
         } catch (e) {
           loadError = e

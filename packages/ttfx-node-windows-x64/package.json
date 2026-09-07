@@ -1,5 +1,5 @@
 {
-  "name": "ttfx-node-win32-x64-msvc",
+  "name": "ttfx-node-windows-x64",
   "version": "0.1.0",
   "description": "ttfx-node binding for Windows x64",
   "license": "MIT",
