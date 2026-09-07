@@ -16,23 +16,23 @@
     --code-bg: #101010;
   }
   html[data-theme="light"] {
-    --bg: #f6f4ef;
-    --panel: #fffdf8;
-    --hairline: #e3ded2;
-    --text: #232323;
-    --muted: #7a7568;
-    --accent: #5a54d1;
-    --code-bg: #efece3;
+    --bg: #e6e2d6;
+    --panel: #efece1;
+    --hairline: #d3cdbb;
+    --text: #2b2a26;
+    --muted: #6f695b;
+    --accent: #4f4ab5;
+    --code-bg: #dcd7c6;
   }
   @media (prefers-color-scheme: light) {
     html:not([data-theme]) {
-      --bg: #f6f4ef;
-      --panel: #fffdf8;
-      --hairline: #e3ded2;
-      --text: #232323;
-      --muted: #7a7568;
-      --accent: #5a54d1;
-      --code-bg: #efece3;
+      --bg: #e6e2d6;
+      --panel: #efece1;
+      --hairline: #d3cdbb;
+      --text: #2b2a26;
+      --muted: #6f695b;
+      --accent: #4f4ab5;
+      --code-bg: #dcd7c6;
     }
   }
   * { box-sizing: border-box; }
@@ -46,7 +46,7 @@
   a { color: var(--accent); text-decoration: none; }
   a:hover { text-decoration: underline; }
   nav {
-    display: flex; align-items: center; gap: 1.25rem;
+    display: flex; align-items: center; gap: 1rem;
     max-width: 880px; margin: 0 auto; padding: 1rem 1.5rem;
     border-bottom: 1px solid var(--hairline);
   }
@@ -56,6 +56,9 @@
     background: none; border: 1px solid var(--hairline); border-radius: 6px;
     color: var(--muted); padding: 0.25rem 0.6rem; cursor: pointer; font: inherit;
   }
+  .icon { display: inline-flex; vertical-align: -3px; color: var(--muted); }
+  .icon:hover { color: var(--text); }
+  .icon svg { width: 19px; height: 19px; display: block; }
   main { max-width: 880px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
   h1 { font-size: 2rem; margin: 0 0 0.5rem; letter-spacing: -0.01em; }
   .sub { color: var(--muted); margin: 0 0 2rem; }
@@ -74,6 +77,14 @@
   section { margin-top: 2.5rem; }
   h2 { font-size: 1.15rem; margin: 0 0 0.75rem; }
   p.muted, span.muted { color: var(--muted); }
+  table { width: 100%; border-collapse: collapse; font-size: 0.875rem; margin-top: 0.75rem; }
+  th, td { text-align: left; padding: 0.45rem 0.6rem; border-bottom: 1px solid var(--hairline); vertical-align: top; }
+  th { color: var(--muted); font-weight: 600; }
+  td code, p code, li code {
+    font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 0.82em;
+    background: var(--code-bg); border: 1px solid var(--hairline); border-radius: 5px;
+    padding: 0.08rem 0.35rem; white-space: nowrap;
+  }
   .term {
     border: 1px solid var(--hairline); border-radius: 10px; overflow: hidden;
     background: #0c0c0c; box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
@@ -115,9 +126,9 @@
 <body>
 <nav>
   <span class="brand">ttfx</span>
-  <a href="https://www.npmjs.com/package/ttfx-js">ttfx-js</a>
-  <a href="https://www.npmjs.com/package/ttfx-node">ttfx-node</a>
-  <a href="https://github.com/Muhammad-Owais-Warsi/ttfx-js">GitHub</a>
+  <a class="icon" href="https://github.com/Muhammad-Owais-Warsi/ttfx-js" aria-label="GitHub repository"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></a>
+  <a class="icon" href="https://www.npmjs.com/package/ttfx-js" aria-label="ttfx-js on npm"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="1" y="4" width="22" height="16" rx="3" fill="none" stroke="currentColor" stroke-width="1.6"/><text x="12" y="16.5" text-anchor="middle" font-size="8.5" font-weight="700" fill="currentColor" font-family="Verdana,sans-serif">npm</text></svg></a>
+  <a class="icon" href="https://www.npmjs.com/package/ttfx-node" aria-label="ttfx-node on npm"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="1" y="4" width="22" height="16" rx="3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-dasharray="3 2"/><text x="12" y="16.5" text-anchor="middle" font-size="7" font-weight="700" fill="currentColor" font-family="Verdana,sans-serif">node</text></svg></a>
   <span class="spacer"></span>
   <button id="theme" type="button">light</button>
 </nav>
@@ -135,16 +146,62 @@
   </div>
 
   <section>
-    <h2>CLI</h2>
-    <pre><code>npm i -g ttfx-js
-echo "hello" | ttfx beams</code><button type="button" data-copy>copy</button></pre>
+    <h2>Names, untangled</h2>
+    <p class="muted">Two packages, three commands. Install names and run names differ on purpose:</p>
+    <table>
+      <tr><th>You type</th><th>What it is</th></tr>
+      <tr><td><code>npm i ttfx-js</code></td><td>Installs the <strong>CLI package</strong></td></tr>
+      <tr><td><code>ttfx</code> / <code>ttfx-js</code></td><td>Runs it — both commands, same binary (<code>ttfx</code> matches upstream docs)</td></tr>
+      <tr><td><code>npm i ttfx-node</code></td><td>Installs the <strong>API package</strong> (no command — <code>import</code> it)</td></tr>
+      <tr><td><code>ttfx-cli</code></td><td>Dead name from release day — deprecated, ignore it</td></tr>
+    </table>
   </section>
 
   <section>
-    <h2>API</h2>
+    <h2>CLI docs</h2>
+    <pre><code>npm i -g ttfx-js
+echo "hello" | ttfx beams
+git log --oneline -10 | ttfx matrix
+npx ttfx-js decrypt --help    # options for one effect</code><button type="button" data-copy>copy</button></pre>
+    <table>
+      <tr><th>Input</th><th>How</th></tr>
+      <tr><td>Pipe</td><td><code>echo "hi" | ttfx decrypt</code> (PowerShell, cmd, bash)</td></tr>
+      <tr><td>File</td><td><code>ttfx --input-file banner.txt beams</code></td></tr>
+      <tr><td>Pick one of 37</td><td><code>ttfx &lt;effect&gt; --help</code> lists each effect's flags</td></tr>
+      <tr><td>Surprise me</td><td><code>ttfx --random-effect</code> (+ <code>--include-effects</code> / <code>--exclude-effects</code>)</td></tr>
+      <tr><td>Deterministic</td><td><code>ttfx --seed 1 decrypt</code> — same seed, same frames</td></tr>
+      <tr><td>Canvas</td><td><code>--frame-rate 60 --canvas-width 40 --canvas-height 10 --wrap-text</code></td></tr>
+      <tr><td>Exit codes</td><td><code>0</code> played · <code>1</code> empty input / error / Ctrl-C</td></tr>
+    </table>
+    <p class="muted">Binaries (~2 MB) arrive as platform packages npm picks automatically. Same speed and rendering as the native Rust build.</p>
+  </section>
+
+  <section>
+    <h2>API docs</h2>
     <pre><code>npm i ttfx-node
-import { play } from 'ttfx-node';
-await play('Deploy complete', 'decrypt');</code><button type="button" data-copy>copy</button></pre>
+import { play, getFrames, listEffects } from 'ttfx-node';
+
+await play('Deploy complete', 'decrypt');              // animates, cleans up
+const frames = getFrames('hi', 'beams', { seed: 1 }); // pure ANSI strings</code><button type="button" data-copy>copy</button></pre>
+    <table>
+      <tr><th>Function</th><th>Does</th></tr>
+      <tr><td><code>play(input, effect, opts?)</code></td><td>Animates in your terminal. Fresh line in, cursor restored out. Rejects <code>INTERRUPTED</code> on Ctrl-C. Plain final text under <code>NO_COLOR</code>/pipes.</td></tr>
+      <tr><td><code>getFrames(input, effect, opts?)</code></td><td>Sync <code>string[]</code>, deterministic per <code>seed</code>. Machine-independent (terminal size never read).</td></tr>
+      <tr><td><code>listEffects()</code></td><td>All 37 names.</td></tr>
+      <tr><td><code>stripAnsi(s)</code></td><td>Plain text from a frame.</td></tr>
+    </table>
+    <table>
+      <tr><th>Option</th><th>Default</th><th>Notes</th></tr>
+      <tr><td><code>seed</code></td><td>OS entropy</td><td>Set it in tests; snapshots never flake</td></tr>
+      <tr><td><code>frameRate</code></td><td><code>60</code></td><td>Pacing hint for players (<code>0</code> = unpaced)</td></tr>
+      <tr><td><code>canvasWidth / canvasHeight</code></td><td>hugs input</td><td>Fix both to align multi-play layouts (max 1000×500)</td></tr>
+      <tr><td><code>effectArgs</code></td><td>effect defaults</td><td>Any flag, CLI-validated: <code>['--typing-speed', '5']</code>. Discover via <code>npx ttfx-js &lt;effect&gt; --help</code></td></tr>
+      <tr><td><code>maxFrames</code></td><td><code>10000</code></td><td>Hard cap 100000 — also your memory guard</td></tr>
+      <tr><td><code>randomEffect</code></td><td><code>false</code></td><td>Seeded pick; filter with <code>include/excludeEffects</code></td></tr>
+      <tr><td><code>noColor / xtermColors</code></td><td><code>false</code></td><td>Plain layout / 8-bit palette for limited terminals</td></tr>
+      <tr><td><code>reuseCanvas</code> (play only)</td><td><code>false</code></td><td>Replay in the previous run's rows (same text): omit first call, set after</td></tr>
+    </table>
+    <p class="muted">Errors are descriptive <code>Error</code>s: <code>NO INPUT.</code> for blank text, CLI text for bad effects/flags, pre-engine errors for oversized input. Baked from the same engine tag as the CLI — CI fails the release if they ever render differently.</p>
   </section>
 
   <section>
