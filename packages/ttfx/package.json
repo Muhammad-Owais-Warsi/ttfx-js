@@ -1,6 +1,6 @@
 {
   "name": "ttfx-js",
-  "version": "0.3.2-win.3",
+  "version": "0.3.2-win.4",
   "description": "Terminal text effects as a single static binary (npm distribution of ttfx)",
   "license": "MIT",
   "repository": {
@@ -15,10 +15,10 @@
     "bin/"
   ],
   "optionalDependencies": {
-    "ttfx-linux-x64-gnu": "0.3.2-win.2",
-    "ttfx-linux-x64-musl": "0.3.2-win.2",
-    "ttfx-darwin-x64": "0.3.2-win.2",
-    "ttfx-darwin-arm64": "0.3.2-win.2",
-    "ttfx-windows-x64": "0.3.2-win.2"
+    "ttfx-linux-x64-gnu": "0.3.2-win.4",
+    "ttfx-linux-x64-musl": "0.3.2-win.4",
+    "ttfx-darwin-x64": "0.3.2-win.4",
+    "ttfx-darwin-arm64": "0.3.2-win.4",
+    "ttfx-windows-x64": "0.3.2-win.4"
   }
 }

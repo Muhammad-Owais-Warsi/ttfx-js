@@ -1,13 +1,19 @@
 {
   "name": "ttfx-darwin-x64",
-  "version": "0.3.2-win.2",
+  "version": "0.3.2-win.4",
   "description": "ttfx binary for macOS x64",
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/Muhammad-Owais-Warsi/ttfx-js"
   },
-  "os": ["darwin"],
-  "cpu": ["x64"],
-  "files": ["ttfx"]
+  "os": [
+    "darwin"
+  ],
+  "cpu": [
+    "x64"
+  ],
+  "files": [
+    "ttfx"
+  ]
 }
