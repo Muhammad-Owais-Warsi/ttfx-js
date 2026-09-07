@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ttfx — terminal text effects</title>
+<meta name="description" content="Terminal text effects as npm packages. No Rust needed.">
+<style>
+  :root {
+    --bg: #141414;
+    --panel: #1c1c1c;
+    --hairline: #2b2b2b;
+    --text: #d7d7d7;
+    --muted: #8c8c8c;
+    --accent: #7d7aff;
+    --code-bg: #101010;
+  }
+  html[data-theme="light"] {
+    --bg: #f6f4ef;
+    --panel: #fffdf8;
+    --hairline: #e3ded2;
+    --text: #232323;
+    --muted: #7a7568;
+    --accent: #5a54d1;
+    --code-bg: #efece3;
+  }
+  @media (prefers-color-scheme: light) {
+    html:not([data-theme]) {
+      --bg: #f6f4ef;
+      --panel: #fffdf8;
+      --hairline: #e3ded2;
+      --text: #232323;
+      --muted: #7a7568;
+      --accent: #5a54d1;
+      --code-bg: #efece3;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, sans-serif;
+    line-height: 1.6;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  nav {
+    display: flex; align-items: center; gap: 1.25rem;
+    max-width: 880px; margin: 0 auto; padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--hairline);
+  }
+  nav .brand { font-weight: 650; }
+  nav .spacer { flex: 1; }
+  nav button {
+    background: none; border: 1px solid var(--hairline); border-radius: 6px;
+    color: var(--muted); padding: 0.25rem 0.6rem; cursor: pointer; font: inherit;
+  }
+  main { max-width: 880px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
+  h1 { font-size: 2rem; margin: 0 0 0.5rem; letter-spacing: -0.01em; }
+  .sub { color: var(--muted); margin: 0 0 2rem; }
+  pre {
+    background: var(--code-bg); border: 1px solid var(--hairline);
+    border-radius: 8px; padding: 0.9rem 1rem; overflow-x: auto;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.875rem; position: relative;
+    font-variant-numeric: tabular-nums;
+  }
+  pre button {
+    position: absolute; top: 0.5rem; right: 0.5rem;
+    background: var(--panel); border: 1px solid var(--hairline); border-radius: 6px;
+    color: var(--muted); padding: 0.15rem 0.5rem; cursor: pointer; font-size: 0.75rem;
+  }
+  section { margin-top: 2.5rem; }
+  h2 { font-size: 1.15rem; margin: 0 0 0.75rem; }
+  p.muted, span.muted { color: var(--muted); }
+  .term {
+    border: 1px solid var(--hairline); border-radius: 10px; overflow: hidden;
+    background: #0c0c0c; box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+  }
+  .term-bar {
+    display: flex; align-items: center; gap: 0.45rem;
+    padding: 0.55rem 0.9rem; background: #1a1a1a;
+    border-bottom: 1px solid #2b2b2b;
+  }
+  .term-bar i { width: 11px; height: 11px; border-radius: 50%; background: #3a3a3a; display: block; }
+  .term-bar span { margin-left: 0.4rem; font-size: 0.8rem; color: #8c8c8c; font-family: ui-monospace, Menlo, Consolas, monospace; }
+  .term video { display: block; width: 100%; aspect-ratio: 16 / 9; background: #0c0c0c; }
+  .term .slot {
+    display: none; aspect-ratio: 16 / 9; align-items: center; justify-content: center;
+    color: #8c8c8c; font-size: 0.9rem; text-align: center; padding: 2rem;
+    font-family: ui-monospace, Menlo, Consolas, monospace;
+  }
+  .term.novideo video { display: none; }
+  .term.novideo .slot { display: flex; }
+  .grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 0.4rem; margin-top: 0.75rem;
+  }
+  .grid code {
+    font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 0.8rem;
+    border: 1px solid var(--hairline); border-radius: 6px; padding: 0.3rem 0.55rem;
+    color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  footer {
+    max-width: 880px; margin: 0 auto; padding: 1.5rem;
+    border-top: 1px solid var(--hairline); color: var(--muted); font-size: 0.85rem;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .term video { display: none; }
+    .term .slot { display: flex; }
+  }
+</style>
+</head>
+<body>
+<nav>
+  <span class="brand">ttfx</span>
+  <a href="https://www.npmjs.com/package/ttfx-js">ttfx-js</a>
+  <a href="https://www.npmjs.com/package/ttfx-node">ttfx-node</a>
+  <a href="https://github.com/Muhammad-Owais-Warsi/ttfx-js">GitHub</a>
+  <span class="spacer"></span>
+  <button id="theme" type="button">light</button>
+</nav>
+<main>
+  <h1>Terminal text effects, no Rust needed.</h1>
+  <p class="sub">37 effects as prebuilt binaries and a Node API. Linux, macOS, Windows.</p>
+
+  <div class="term" id="hero">
+    <div class="term-bar"><i></i><i></i><i></i><span>ttfx</span></div>
+    <video autoplay muted loop playsinline poster="assets/hero-poster.png">
+      <source src="assets/hero.mp4" type="video/mp4">
+      <source src="assets/hero.webm" type="video/webm">
+    </video>
+    <div class="slot">demo video lands here —<br>drop hero.mp4 / hero.webm / hero-poster.png in docs/assets/</div>
+  </div>
+
+  <section>
+    <h2>CLI</h2>
+    <pre><code>npm i -g ttfx-js
+echo "hello" | ttfx beams</code><button type="button" data-copy>copy</button></pre>
+  </section>
+
+  <section>
+    <h2>API</h2>
+    <pre><code>npm i ttfx-node
+import { play } from 'ttfx-node';
+await play('Deploy complete', 'decrypt');</code><button type="button" data-copy>copy</button></pre>
+  </section>
+
+  <section>
+    <h2>Effects</h2>
+    <p class="muted">All 37, same engine behind both packages.</p>
+    <div class="grid" id="effects"></div>
+  </section>
+
+  <section>
+    <h2>Credit</h2>
+    <p class="muted">Effects, engine and CLI are the work of
+    <a href="https://github.com/ChrisBuilds/terminaltexteffects">TerminalTextEffects</a>
+    by ChrisBuilds, via the
+    <a href="https://github.com/omacom-io/ttfx">ttfx Rust port</a>.
+    These packages only ship and bind them.</p>
+  </section>
+</main>
+<footer>MIT · <a href="https://github.com/Muhammad-Owais-Warsi/ttfx-js">ttfx-js</a></footer>
+<script>
+  const names = ['beams','binarypath','blackhole','bouncyballs','bubbles','burn','colorshift','crumble','decrypt','errorcorrect','expand','fireworks','highlight','laseretch','matrix','middleout','orbittingvolley','overflow','pour','print','rain','randomsequence','rings','scattered','slice','slide','smoke','spotlights','spray','swarm','sweep','synthgrid','thunderstorm','unstable','vhstape','waves','wipe'];
+  const grid = document.getElementById('effects');
+  for (const n of names) {
+    const el = document.createElement('code');
+    el.textContent = n;
+    grid.appendChild(el);
+  }
+  const root = document.documentElement;
+  const btn = document.getElementById('theme');
+  const saved = localStorage.getItem('ttfx-theme');
+  if (saved) root.dataset.theme = saved;
+  const paint = () => { btn.textContent = root.dataset.theme === 'light' ? 'dark' : 'light'; };
+  paint();
+  btn.onclick = () => {
+    root.dataset.theme = root.dataset.theme === 'light' ? 'dark' : 'light';
+    localStorage.setItem('ttfx-theme', root.dataset.theme);
+    paint();
+  };
+  document.querySelectorAll('[data-copy]').forEach((b) => {
+    b.onclick = async () => {
+      await navigator.clipboard.writeText(b.previousElementSibling.innerText);
+      b.textContent = 'copied';
+      setTimeout(() => { b.textContent = 'copy'; }, 1200);
+    };
+  });
+  const hero = document.getElementById('hero');
+  const video = hero.querySelector('video');
+  video.addEventListener('error', () => hero.classList.add('novideo'), true);
+  video.querySelectorAll('source').forEach((s) => {
+    s.addEventListener('error', () => hero.classList.add('novideo'));
+  });
+</script>
+</body>
+</html>
