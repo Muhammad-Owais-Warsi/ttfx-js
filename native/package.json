@@ -1,6 +1,6 @@
 {
   "name": "ttfx-node",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Headless ttfx frames for JS CLI builders (sync napi binding)",
   "license": "MIT",
   "repository": {
@@ -14,7 +14,8 @@
     "index.d.ts",
     "api.js",
     "api.mjs",
-    "api.d.ts"
+    "api.d.ts",
+    "README.md"
   ],
   "exports": {
     ".": {
