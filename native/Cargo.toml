@@ -10,4 +10,4 @@ crate-type = ["cdylib"]
 napi = "2"
 napi-derive = "2"
 clap = { version = "4", features = ["derive"] }
-ttfx = { git = "https://github.com/Muhammad-Owais-Warsi/ttfx", tag = "v0.3.2-win.3" }
+ttfx = { git = "https://github.com/Muhammad-Owais-Warsi/ttfx", tag = "v0.3.2-win.4" }
