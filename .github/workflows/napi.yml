@@ -76,6 +76,12 @@ jobs:
           targets: ${{ matrix.target }}
       - if: matrix.musl
         run: sudo apt-get update && sudo apt-get install -y musl-tools
+      # NASM assembles the x86-64 engine into the gnu binding (Linux-only by
+      # upstream design). musl is left without it: static musl linking may not
+      # resolve the libc math calls in the asm objects. Either way the frames
+      # are byte-identical (sync-gate asserts CLI == binding per OS).
+      - if: matrix.pkg == 'ttfx-node-linux-x64-gnu'
+        run: sudo apt-get update && sudo apt-get install -y nasm
       # npm install (not ci): the optional platform deps don't exist on the
       # registry until first publish, and only ci treats that as fatal.
       - run: npm install --no-audit --no-fund
