@@ -75,12 +75,6 @@ jobs:
           targets: ${{ matrix.target }}
       - if: matrix.musl
         run: sudo apt-get update && sudo apt-get install -y musl-tools
-      # NASM assembles the x86-64 engine (Linux-only by upstream design).
-      # Without it the build warns and ships pure Rust — same output, slower.
-      # musl is left without NASM on purpose: the asm objects call into libc
-      # math (hypot/sincos) that static musl linking may not resolve.
-      - if: matrix.pkg == 'ttfx-linux-x64-gnu'
-        run: sudo apt-get update && sudo apt-get install -y nasm
       - run: cargo build --release --target ${{ matrix.target }}
         working-directory: ttfx-src
       - run: cp "ttfx-src/target/${{ matrix.target }}/release/${{ matrix.exe }}" "ttfx-js/packages/${{ matrix.pkg }}/${{ matrix.exe }}"
