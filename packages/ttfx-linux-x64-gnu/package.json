@@ -1,6 +1,6 @@
 {
   "name": "ttfx-linux-x64-gnu",
-  "version": "0.5.0-win.2",
+  "version": "0.5.0-win.3",
   "description": "ttfx binary for Linux x64 (glibc)",
   "license": "MIT",
   "repository": {
