@@ -1,6 +1,6 @@
 {
   "name": "ttfx-node",
-  "version": "0.1.12",
+  "version": "0.1.13",
   "description": "Headless ttfx frames for JS CLI builders (Node napi binding) and browsers (wasm Session + canvas painter)",
   "license": "MIT",
   "repository": {
@@ -37,11 +37,11 @@
     }
   },
   "optionalDependencies": {
-    "ttfx-node-linux-x64-gnu": "0.1.12",
-    "ttfx-node-linux-x64-musl": "0.1.12",
-    "ttfx-node-darwin-x64": "0.1.12",
-    "ttfx-node-darwin-arm64": "0.1.12",
-    "ttfx-node-windows-x64": "0.1.12"
+    "ttfx-node-linux-x64-gnu": "0.1.13",
+    "ttfx-node-linux-x64-musl": "0.1.13",
+    "ttfx-node-darwin-x64": "0.1.13",
+    "ttfx-node-darwin-arm64": "0.1.13",
+    "ttfx-node-windows-x64": "0.1.13"
   },
   "scripts": {
     "build": "napi build --platform --release",
