@@ -161,6 +161,11 @@ jobs:
       # documents for its own wasm builds.
       - run: sed -i 's/crate-type = \["rlib"\]/crate-type = ["cdylib", "rlib"]/' Cargo.toml
         working-directory: ttfx-src
+      # wasm-opt's bundled validator rejects the bulk-memory ops current
+      # rustc emits (both sides fail the same way); ship unoptimized until
+      # the toolchain pair agrees again. No fork change needed.
+      - run: printf '\n[package.metadata.wasm-pack.profile.release]\nwasm-opt = false\n' >> Cargo.toml
+        working-directory: ttfx-src
       - run: wasm-pack build --target web --out-dir "$GITHUB_WORKSPACE/wasm-pkg" --out-name ttfx_wasm
         working-directory: ttfx-src
       # Drive the real artifact headlessly like omarchy.org's etch.js does:
