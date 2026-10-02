@@ -1,6 +1,6 @@
 {
   "name": "ttfx-darwin-arm64",
-  "version": "0.5.0-win.3",
+  "version": "0.5.0-win.4",
   "description": "ttfx binary for macOS arm64",
   "license": "MIT",
   "repository": {

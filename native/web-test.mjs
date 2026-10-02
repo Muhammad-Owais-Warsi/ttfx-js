@@ -13,6 +13,16 @@ const dir = process.argv[2]
 const glue = await import(pathToFileURL(join(dir, 'ttfx_wasm.js')).href);
 glue.initSync({ module: readFileSync(join(dir, 'ttfx_wasm_bg.wasm')) });
 
+// Without this a wasm panic only prints "unreachable": the console hook is
+// how Rust's own panic message reaches the terminal.
+const { logError, __wbindgen_throw } = glue;
+globalThis.addEventListener?.('error', (e) => {
+  if (e.error) logError(String(e.error));
+  else logError(e.message);
+});
+console.onerror = logError;
+globalThis.addEventListener?.('unhandledrejection', (e) => logError(String(e.reason)));
+
 const { Session, effect_catalog } = glue;
 const HIDDEN = 32;
 
