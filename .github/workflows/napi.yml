@@ -149,7 +149,9 @@ jobs:
           repository: Muhammad-Owais-Warsi/ttfx
           ref: ${{ needs.setup.outputs.tag }}
           path: ttfx-src
-      - uses: dtolnay/rust-toolchain@stable
+      # Pinned: newer rustc emits wasm features this Node's validator rejects
+      # (traps at instantiation). 1.95.0 is what the local smoke passed on.
+      - uses: dtolnay/rust-toolchain@1.95.0
         with:
           targets: wasm32-unknown-unknown
       - uses: actions/setup-node@v4
