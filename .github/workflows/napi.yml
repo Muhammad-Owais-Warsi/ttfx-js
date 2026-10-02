@@ -149,6 +149,10 @@ jobs:
           repository: Muhammad-Owais-Warsi/ttfx
           ref: ${{ needs.setup.outputs.tag }}
           path: ttfx-src
+      # The installer script ships wasm-pack 0.13.x, whose wasm-bindgen emits a
+      # glue Node 24 rejects at instantiation. 0.15.0 is what the local smoke
+      # passed against.
+      - run: cargo install wasm-pack --version 0.15.0 --locked
       # Pinned: newer rustc emits wasm features this Node's validator rejects
       # (traps at instantiation). 1.95.0 is what the local smoke passed on.
       - uses: dtolnay/rust-toolchain@1.95.0
@@ -157,7 +161,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "24"
-      - run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
       # The fork manifest stays rlib (a cdylib there collides on macOS
       # `cargo test`); the wasm build opts into cdylib locally, as upstream
       # documents for its own wasm builds.
