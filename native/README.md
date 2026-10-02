@@ -3,6 +3,8 @@
 Terminal text effects for JS CLI builders — chalk-style. Same engine as the
 [`ttfx-js`](https://www.npmjs.com/package/ttfx-js) CLI (prebuilt Rust binary,
 all 37 effects), exposed as functions: no child processes, no Rust needed.
+The same engine also ships as WebAssembly for browsers (`ttfx-node/web`,
+direct `<canvas>` painting, no terminal emulator) — see [Web](#web).
 
 ```sh
 npm i ttfx-node
@@ -94,6 +96,33 @@ Building a CLI with this? The patterns that work best:
 asserts CLI `--parity-dump` and `getFrames` byte-identical per OS — a release
 fails if the API ever renders differently. See `versions.json` in
 [ttfx-js](https://github.com/Muhammad-Owais-Warsi/ttfx-js) for the mapping.
+
+## Web
+
+`ttfx-node/web` runs the same fx engine in the browser as WebAssembly and
+paints packed cells straight to `<canvas>` — no terminal emulator, no ANSI
+parsing. Bundlers resolve it automatically via the `browser` export
+condition; Node keeps using the napi binding.
+
+```js
+import init, { playOnCanvas, listEffects } from 'ttfx-node/web';
+
+await init(); // loads the wasm once (~1.5 MB)
+console.log(listEffects().length); // 37
+
+const anim = playOnCanvas(canvas, 'Ship it', 'decrypt', {
+  seed: 7,
+  palette: '#daecc6,#bbdd97,#9ece6a,#678549,#39482e',
+});
+await anim.done; // resolves when the effect settles
+anim.cancel(); // stop early
+```
+
+Options mirror the Node surface where they apply (`seed`, `frameRate`,
+fixed `canvasWidth`/`canvasHeight`, `palette`, `background`, `bands`), plus
+painter opts (`font`, `cellPx`, `transparent`). For the raw engine, `Session`
+(`new`/`step`/`fill`/`width`/`height`/`free`), `effect_catalog()` and
+`field_band_index()` are re-exported — the same calls omarchy.org drives.
 
 ## Credit
 
