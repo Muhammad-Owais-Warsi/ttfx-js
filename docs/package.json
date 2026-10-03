@@ -1,0 +1,19 @@
+{
+  "name": "ttfx-docs",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "predev": "node scripts/copy-wasm.mjs",
+    "dev": "vite",
+    "prebuild": "node scripts/copy-wasm.mjs",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "ttfx-node": "^0.1.16"
+  },
+  "devDependencies": {
+    "vite": "^6.0.0"
+  }
+}

@@ -1,0 +1,118 @@
+# ttfx
+
+> Terminal text effects as a CLI, a Node API, and WebAssembly for the browser.
+> One fast fx engine (Rust) renders 37 effects with byte-identical frames on
+> every platform: static binary, napi Node binding, and a wasm Session that
+> paints packed cells straight to canvas. No terminal emulator, no ANSI
+> parsing on the web path.
+
+## Docs
+
+- [Install](/#install): `npx ttfx-js`, `npm i -g ttfx-js`, `npm i ttfx-node`
+- [CLI reference](/cli.html): usage, terminal options, per-effect flags, `--palette`/`--bands`
+- [Node API](/node.html): `play`, `getFrames`, `listEffects`, `stripAnsi`
+- [Web](/web.html): `ttfx-node/web` entry, `playOnCanvas`, raw `Session`
+- [All 37 effects](/effects.html): names, descriptions, copy-paste CLI commands
+
+## Install
+
+```sh
+npx ttfx-js decrypt            # CLI, no install; pipe text in
+npm i -g ttfx-js               # global: ttfx and ttfx-js commands
+npm i ttfx-node                # Node API + browser entry
+```
+
+## CLI
+
+```sh
+<producer> | ttfx [terminal options] <effect> [effect options]
+ttfx --help                    # all 37 effects and terminal options
+ttfx <effect> --help           # options for one effect
+ttfx --random-effect           # surprise me (--include-effects / --exclude-effects)
+echo "hello" | ttfx beams
+git log --oneline -10 | ttfx matrix
+```
+
+Terminal options go before the effect name: `--seed` (deterministic runs),
+`--canvas-width/--canvas-height`, `--frame-rate`, `--tab-width`, `--wrap-text`,
+`--no-color`, `--xterm-colors`, `--terminal-background-color`,
+`--existing-color-handling`, `--input-file`, `--print-completion bash|zsh`.
+Effect options go after it. `--palette HEX,..` + `--bands` themes the word in
+field stripes (crest, hover, lit, mid, dim).
+
+## Effects (37)
+
+beams, binarypath, blackhole, bouncyballs, bubbles, burn, colorshift, crumble,
+decrypt, errorcorrect, expand, fireworks, highlight, laseretch, matrix,
+middleout, orbittingvolley, overflow, pour, print, rain, randomsequence,
+rings, scattered, slice, slide, smoke, spotlights, spray, swarm, sweep,
+synthgrid, thunderstorm, unstable, vhstape, waves, wipe.
+
+Each effect takes its own options — see `ttfx <effect> --help` or the
+[effects page](/effects.html).
+
+## Node API (ttfx-node)
+
+```js
+import { play, getFrames, listEffects } from 'ttfx-node';
+
+await play('Deploy complete', 'decrypt');               // animates the terminal
+const frames = getFrames('hi', 'beams', { seed: 1 });   // string[] of ANSI frames
+const tuned = getFrames('hi', 'decrypt', {
+  seed: 1, effectArgs: ['--typing-speed', '5'],           // any effect flag, CLI-validated
+});
+```
+
+- `getFrames(input, effect, opts?)`: sync, deterministic per `seed` (virtual
+  clock; terminal size never read). Options: `seed`, `frameRate` (default 60),
+  `canvasWidth`, `canvasHeight`, `tabWidth` (default 4), `wrapText`,
+  `noColor`, `xtermColors`, `maxFrames` (default 10000, hard max 100000),
+  `randomEffect`, `includeEffects`, `excludeEffects`, `effectArgs`.
+- `play(input, effect, opts?)`: hides/restores the cursor, paces at
+  `frameRate`; prints plain final text under `NO_COLOR`/pipes; rejects with
+  code `INTERRUPTED` on Ctrl-C after restoring the cursor.
+- `listEffects()`: all 37 effect names. `stripAnsi(s)`: strip escapes.
+- Errors: `NO INPUT.` for blank input; CLI error text for unknown effects,
+  invalid flags, oversized input/canvas.
+
+## Web (ttfx-node/web)
+
+```js
+import init, { playOnCanvas, listEffects } from 'ttfx-node/web';
+
+await init(); // loads the wasm once
+console.log(listEffects().length); // 37
+
+const anim = playOnCanvas(canvas, 'Ship it', 'decrypt', {
+  seed: 7,
+  palette: '#daecc6,#bbdd97,#9ece6a,#678549,#39482e',
+  bands: true,
+});
+await anim.done;
+anim.cancel(); // stop early
+```
+
+- Same vocabulary as Node `play` where it applies: `seed`, `frameRate`,
+  `canvasWidth`, `canvasHeight`, plus `palette`, `background`, `bands`.
+- Painter opts: `font`, `cellPx`, `transparent`.
+- Raw engine: `Session` (`new`/`step`/`fill`/`width`/`height`/`free`),
+  `effect_catalog()`, `field_band_index()`, `paintFrame()`.
+- `fill(symbols, fg, bg, flags)`: packed cell buffers (u32 symbols, 24-bit
+  RGB, u8 flags with HIDDEN=32). Serve the `wasm/` files beside the bundle;
+  dynamic-import the entry to keep it out of SSR bundles.
+
+## Determinism and parity
+
+Same input + seed + options = byte-identical frames on CLI, Node, and web
+(virtual clock; terminal size never read by the headless paths). CI asserts
+CLI `--parity-dump` == `getFrames` per OS, and the wasm smoke drives
+`Session`/`step`/`fill` headlessly.
+
+## Source and packages
+
+- Engine fork (Windows + wasm Session): https://github.com/Muhammad-Owais-Warsi/ttfx
+- Upstream Rust port: https://github.com/omacom/ttfx
+- Original effects (Python): https://github.com/ChrisBuilds/terminaltexteffects
+- npm CLI: https://www.npmjs.com/package/ttfx-js
+- npm API: https://www.npmjs.com/package/ttfx-node
+- License: MIT.

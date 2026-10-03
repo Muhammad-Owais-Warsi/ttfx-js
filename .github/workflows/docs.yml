@@ -5,6 +5,7 @@ on:
     branches: [master]
     paths:
       - "docs/**"
+      - "versions.json"
       - ".github/workflows/docs.yml"
   workflow_dispatch:
 
@@ -20,11 +21,23 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: docs
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+          cache-dependency-path: docs/package-lock.json
+      - run: npm ci --no-audit --no-fund
+      # vite needs esbuild's postinstall binary; approve it non-interactively.
+      - run: npm approve-scripts esbuild && npm rebuild esbuild
+      - run: npm run build
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: docs
+          path: docs/dist
 
   deploy:
     needs: build
