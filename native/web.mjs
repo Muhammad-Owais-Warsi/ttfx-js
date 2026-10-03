@@ -127,17 +127,37 @@ export function playOnCanvas(canvas, input, effect, opts = {}) {
   let buf = makeBuffers(w, h);
   let raf = 0;
   let cancelled = false;
+  let freed = false;
   let resolve;
   const done = new Promise((res) => { resolve = res; });
+  // Freeing twice traps ("null pointer passed to rust") and repeated traps
+  // corrupt the wasm heap, which wedges every later Session. One free only.
+  const freeOnce = () => {
+    if (!freed) {
+      freed = true;
+      session.free();
+    }
+  };
   let last = 0;
   const interval = 1000 / Math.max(1, frameRate);
   const tick = (now) => {
     if (cancelled) return;
     if (now - last >= interval) {
       last = now;
-      if (!session.step()) {
-        paintFrame(ctx, session, buf, metrics, opts);
-        session.free();
+      // A throwing step ends the animation instead of wedging the loop.
+      let alive = true;
+      try {
+        alive = session.step();
+      } catch {
+        alive = false;
+      }
+      if (!alive) {
+        try {
+          paintFrame(ctx, session, buf, metrics, opts);
+        } catch {
+          /* engine already gone; leave the last good frame up */
+        }
+        freeOnce();
         resolve();
         return;
       }
@@ -159,7 +179,7 @@ export function playOnCanvas(canvas, input, effect, opts = {}) {
     cancel() {
       cancelled = true;
       cancelAnimationFrame(raf);
-      session.free();
+      freeOnce();
       resolve();
     },
   };
