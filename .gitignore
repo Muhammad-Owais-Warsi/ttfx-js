@@ -3,6 +3,9 @@ native/node_modules/
 native/target/
 native/*.node
 native/wasm/
+docs/node_modules/
+docs/dist/
+docs/public/ttfx_wasm_bg.wasm
 packages/ttfx-linux-x64-gnu/ttfx
 packages/ttfx-linux-x64-musl/ttfx
 packages/ttfx-darwin-x64/ttfx

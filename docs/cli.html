@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CLI reference — ttfx</title>
+    <link rel="icon" href="./og.png" type="image/png" />
+    <meta name="theme-color" content="#0a0a10" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="ttfx" />
+    <meta property="og:title" content="CLI reference - ttfx" />
+    <meta property="og:description" content="One static binary. Pipe text in, pick an effect. All 37 effects and their flags." />
+    <meta property="og:image" content="https://muhammad-owais-warsi.github.io/ttfx-js/og.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="CLI reference - ttfx" />
+    <meta name="twitter:description" content="One static binary. Pipe text in, pick an effect. All 37 effects and their flags." />
+    <meta name="twitter:image" content="https://muhammad-owais-warsi.github.io/ttfx-js/og.png" />
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <nav>
+      <a class="brand" href="./">ttfx</a>
+      <a href="./cli.html" class="active hide-sm">CLI</a>
+      <a href="./node.html" class="hide-sm">Node</a>
+      <a href="./web.html" class="hide-sm">Web</a>
+      <a href="./effects.html" class="hide-sm">Effects</a>
+      <span class="spacer"></span>
+      <a class="nav-gh" href="https://github.com/Muhammad-Owais-Warsi/ttfx-js" aria-label="GitHub"><svg viewBox="0 0 16 16" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg></a>
+    </nav>
+    <main class="wrap">
+      <h2 class="page-title">CLI reference</h2>
+      <p class="lede">One static binary. Pipe text in, pick an effect.</p>
+      <pre><code>&lt;producer&gt; | ttfx [terminal options] &lt;effect&gt; [effect options]
+
+ttfx --help                 # all 37 effects and the terminal options
+ttfx &lt;effect&gt; --help        # options for one effect
+ttfx --random-effect        # surprise me (--include-effects / --exclude-effects)</code></pre>
+      <p>
+        Terminal options go before the effect name (canvas size, colors, frame
+        rate, wrapping); effect options go after it. Also useful:
+        <code>--seed</code> (deterministic runs),
+        <code>--palette HEX,..</code> + <code>--bands</code> (theme the word
+        in field stripes), <code>--print-completion bash|zsh</code>.
+      </p>
+      <h3>Every effect and its flags</h3>
+      <div id="cli-effects"></div>
+    <footer>
+        <p>
+          Built by <a href="https://x.com/MO_warsi786">@owais</a>.
+        </p>
+      </footer>
+    </main>
+    <script type="module" src="/src/cli-page.ts"></script>
+  </body>
+</html>
