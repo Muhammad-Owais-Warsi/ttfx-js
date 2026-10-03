@@ -1,6 +1,6 @@
 {
   "name": "ttfx-node-darwin-arm64",
-  "version": "0.1.14",
+  "version": "0.1.15",
   "description": "ttfx-node binding for macOS arm64",
   "license": "MIT",
   "repository": {

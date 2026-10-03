@@ -1,6 +1,6 @@
 {
   "name": "ttfx-linux-x64-musl",
-  "version": "0.5.0-win.7",
+  "version": "0.5.0-win.8",
   "description": "ttfx binary for Linux x64 (musl, static)",
   "license": "MIT",
   "repository": {
