@@ -367,7 +367,7 @@ dependencies = [
 [[package]]
 name = "ttfx"
 version = "0.5.0"
-source = "git+https://github.com/Muhammad-Owais-Warsi/ttfx?tag=v0.5.0-win.7#a187d4cc3b4a2786e13ee03d472fe72b29f8815d"
+source = "git+https://github.com/Muhammad-Owais-Warsi/ttfx?tag=v0.5.0-win.8#446c4f45b8953716c8ccc4fdfec3f423dbe10845"
 dependencies = [
  "clap",
  "clap_complete",
