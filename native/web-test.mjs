@@ -24,11 +24,14 @@ console.onerror = logError;
 globalThis.addEventListener?.('unhandledrejection', (e) => logError(String(e.reason)));
 
 const { Session, effect_catalog } = glue;
+console.log('imports ok');
 const HIDDEN = 32;
 
 function run(input, effect, seed, palette) {
   // Real grid dims: (0, 0) is a degenerate terminal, not "auto".
+  console.log(`session new: ${effect}`);
   const s = new Session(input, effect, 40, 12, seed, 60, palette);
+  console.log(`session ok: ${s.width()}x${s.height()}`);
   const frames = [];
   for (let i = 0; i < 100000 && s.step(); i++) {
     const n = s.width() * s.height();
@@ -59,7 +62,9 @@ function visibleText(frame) {
 }
 
 // catalog: 37 effects
+console.log('calling catalog');
 const catalog = JSON.parse(effect_catalog());
+console.log('catalog ok:', catalog.length);
 assert.equal(catalog.length, 37);
 assert.ok(catalog.some((e) => e.name === 'decrypt'));
 
