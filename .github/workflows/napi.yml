@@ -158,6 +158,7 @@ jobs:
       - uses: dtolnay/rust-toolchain@1.95.0
         with:
           targets: wasm32-unknown-unknown
+      - run: node --version; rustc --version; wasm-pack --version
       - uses: actions/setup-node@v4
         with:
           node-version: "24"
@@ -177,6 +178,7 @@ jobs:
       # Session + step + fill, determinism, palette, error paths.
       - run: node ttfx-js/native/web-test.mjs "$GITHUB_WORKSPACE/wasm-pkg"
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: ttfx-wasm-pkg
           path: wasm-pkg/ttfx_wasm*
