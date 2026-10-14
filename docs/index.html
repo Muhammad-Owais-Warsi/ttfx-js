@@ -32,6 +32,7 @@
     </nav>
 
     <header class="hero">
+      <p class="kicker">CLI · Node API · WebAssembly</p>
       <h1>Terminal text effects, <span>everywhere.</span></h1>
       <p class="sub">
         One fast engine with 37 effects — shipped as a static binary, a Node
@@ -39,7 +40,7 @@
         is the engine itself, looping every effect live.
       </p>
       <div class="hero-stage"><canvas id="hero"></canvas></div>
-      <p class="effect-hdg"><code id="hero-effect">loading</code></p></p>
+      <p class="effect-hdg"><code id="hero-effect">loading</code></p>
       <div class="cta">
         <a class="btn-primary" href="./effects.html">Browse 37 effects</a>
         <a class="btn-ghost" href="#install">Install</a>
@@ -49,20 +50,21 @@
     <main class="wrap">
       <div class="cards">
         <a class="scard" href="./cli.html">
-          <b>⌁ CLI</b>
+          <b>CLI</b>
           <span>Pipe text in, pick an effect. One static binary, no runtime. <code>npx ttfx-js decrypt</code></span>
         </a>
         <a class="scard" href="./node.html">
-          <b>⬢ Node API</b>
+          <b>Node API</b>
           <span><code>play()</code> for terminals, <code>getFrames()</code> for headless rendering. Deterministic per seed.</span>
         </a>
         <a class="scard" href="./web.html">
-          <b>◈ Web</b>
+          <b>Web</b>
           <span>Same engine as WebAssembly. Packed cells straight to <code>&lt;canvas&gt;</code> — no emulator.</span>
         </a>
       </div>
 
       <section id="install">
+        <p class="eyebrow">Get started</p>
         <h2 class="page-title">Install</h2>
         <h3>CLI — no install at all</h3>
         <pre><code>npx ttfx-js decrypt            # runs once, pipe text in
@@ -81,8 +83,9 @@ echo "hello" | ttfx beams        # ttfx and ttfx-js both work</code></pre>
           via the <a href="https://github.com/omacom/ttfx">ttfx Rust port</a>
           (Windows support from
           <a href="https://github.com/Muhammad-Owais-Warsi/ttfx">this fork</a>).
-          MIT.</p><p>Built by <a href="https://x.com/MO_warsi786">@owais</a>.
+          MIT.
         </p>
+        <p>Built by <a href="https://x.com/MO_warsi786">@owais</a>.</p>
       </footer>
     </main>
 
